@@ -49,22 +49,6 @@ docker run --name dz-ssrf --link dz-mysql:mysql -p 8888:80 -d dz-redis-init apac
 * Redis的未授权访问，嵌套Lua脚本将会导致代码执行直接写shell/私钥
 * ...
 
-###修复意见
-####Discuz及Dz的SSRF问题
-
-* 及时升级Dz版本，尽量避免使用不明第三方插件
-* 修改function_core.php文件,替换即可
-```
-if (preg_match("(/|#|\+|%).*(/|#|\+|%)e", $_G['setting']['output']['preg']['search']) !== FALSE) { die("request error"); } 
-	$content = preg_replace($_G['setting']['output']['preg']['search'], $_G['setting']['output']['preg']['replace'], $content);
-```
-####Redis未授权访问
-
-* 配置bind选项，限定可以连接Redis服务器的IP，修改 Redis 的默认端口6379
-* 配置认证，也就是AUTH，设置密码，密码会以明文方式保存在Redis配置文件中
-* 配置rename-command 配置项 “RENAME_CONFIG”，这样即使存在未授权访问，也能够给攻击者使用config 指令加大难度
-* 好消息是Redis作者表示将会开发”real user”，区分普通用户和admin权限，普通用户将会被禁止运行某些命令，如config
-* 照妖镜https://www.seebug.org/monster/?vul_id=89715
 
 ##PoC使用
 
@@ -75,6 +59,23 @@ pocsuite -r dz_redis_exec.py -u url --verify
 pocsuite -r dz_redis_exec.py -u url --attack
 ```
 环境测试均success!
+##修复意见
+###Discuz及Dz的SSRF问题
+
+* 及时升级Dz版本，尽量避免使用不明第三方插件
+* 修改function_core.php文件,替换即可
+```
+if (preg_match("(/|#|\+|%).*(/|#|\+|%)e", $_G['setting']['output']['preg']['search']) !== FALSE) { die("request error"); } 
+	$content = preg_replace($_G['setting']['output']['preg']['search'], $_G['setting']['output']['preg']['replace'], $content);
+```
+###Redis未授权访问
+
+* 配置bind选项，限定可以连接Redis服务器的IP，修改 Redis 的默认端口6379
+* 配置认证，也就是AUTH，设置密码，密码会以明文方式保存在Redis配置文件中
+* 配置rename-command 配置项 “RENAME_CONFIG”，这样即使存在未授权访问，也能够给攻击者使用config 指令加大难度
+* 好消息是Redis作者表示将会开发”real user”，区分普通用户和admin权限，普通用户将会被禁止运行某些命令，如config
+* 照妖镜https://www.seebug.org/monster/?vul_id=89715
+
 
 ##参考
 
