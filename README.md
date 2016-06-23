@@ -50,7 +50,7 @@ docker run --name dz-ssrf --link dz-mysql:mysql -p 8888:80 -d dz-redis-init apac
 * ...
 
 
-##PoC使用
+###PoC使用
 
 使用pocsuite框架
 Usage:
@@ -59,8 +59,8 @@ pocsuite -r dz_redis_exec.py -u url --verify
 pocsuite -r dz_redis_exec.py -u url --attack
 ```
 环境测试均success!
-##修复意见
-###Discuz及Dz的SSRF问题
+###修复意见
+#### Discuz及Dz的SSRF问题
 
 * 及时升级Dz版本，尽量避免使用不明第三方插件
 * 修改function_core.php文件,替换即可
@@ -68,7 +68,7 @@ pocsuite -r dz_redis_exec.py -u url --attack
 if (preg_match("(/|#|\+|%).*(/|#|\+|%)e", $_G['setting']['output']['preg']['search']) !== FALSE) { die("request error"); } 
 	$content = preg_replace($_G['setting']['output']['preg']['search'], $_G['setting']['output']['preg']['replace'], $content);
 ```
-###Redis未授权访问
+#### Redis未授权访问
 
 * 配置bind选项，限定可以连接Redis服务器的IP，修改 Redis 的默认端口6379
 * 配置认证，也就是AUTH，设置密码，密码会以明文方式保存在Redis配置文件中
