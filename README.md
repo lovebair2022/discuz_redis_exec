@@ -1,5 +1,5 @@
-#Discuz!利用SSRF+缓存应用代码执行漏洞环境搭建及PoC
-##Introduce
+#Discuz!利用SSRF+缓存应用代码执行漏洞环境及PoC
+##简介
 ```
 Desc : Discuz_ssrf_redis_codeexec.
 
