@@ -34,7 +34,7 @@ extension=php_igbinary.dll
 extension=php_redis.dll
 extension=php_memcache.dll
 ```
-Kali(Debain) + Docker(mysql + redis + skyzhou/docker-discuz)
+Kali(Debian) + Docker(mysql + redis + skyzhou/docker-discuz)
 ```bash
 docker run --name dz-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql
 
