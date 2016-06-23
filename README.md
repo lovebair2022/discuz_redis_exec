@@ -64,6 +64,7 @@ if (preg_match("(/|#|\+|%).*(/|#|\+|%)e", $_G['setting']['output']['preg']['sear
 * 配置认证，也就是AUTH，设置密码，密码会以明文方式保存在Redis配置文件中
 * 配置rename-command 配置项 “RENAME_CONFIG”，这样即使存在未授权访问，也能够给攻击者使用config 指令加大难度
 * 好消息是Redis作者表示将会开发”real user”，区分普通用户和admin权限，普通用户将会被禁止运行某些命令，如config
+* 照妖镜https://www.seebug.org/monster/?vul_id=89715
 
 ##PoC使用
 
@@ -74,9 +75,10 @@ pocsuite -r dz_redis_exec.py -u url --verify
 pocsuite -r dz_redis_exec.py -u url --attack
 ```
 环境测试均success!
+
 ##参考
 
 * http://pocsuite.org/
 * https://github.com/imp0wd3r
 * https://github.com/C1tas
-
+* http://pan.baidu.com/s/1dFHOQUt
