@@ -1,16 +1,18 @@
-#Discuz!ÀûÓÃSSRF+»º´æÓ¦ÓÃ´úÂëÖ´ĞĞÂ©¶´»·¾³¼°PoC
-##¼ò½é
+#Discuz!åˆ©ç”¨SSRF+ç¼“å­˜åº”ç”¨ä»£ç æ‰§è¡Œæ¼æ´ç¯å¢ƒåŠPoC
+##ç®€ä»‹
 ```
 Desc : Discuz_ssrf_redis_codeexec.
 
 References : https://www.seebug.org/vuldb/ssvid-91879.
+
+æ¼æ´å®ä¾‹ï¼šhttp://wooyun.org/bugs/wooyun-2010-0213982.
 ```
 ##Docker+Pentest
 
-###Â©¶´¸´ÏÖ
+###æ¼æ´å¤ç°
 
-####Â©¶´ÏêÇé
-Â©¶´¾ÍÊÇÍ¨¹ıssrfÀ´²Ù×÷redis£¬¸ü¸ÄÁËÈ«¾Ö±äÁ¿µÄÖµ£¬µ¼ÖÂÈÎÒâ´úÂëÖ´ĞĞ¡£ÎÄ¼ş£ºsource\function\function_core.php(1080G)
+####æ¼æ´è¯¦æƒ…
+æ¼æ´å°±æ˜¯é€šè¿‡ssrfæ¥æ“ä½œredisï¼Œæ›´æ”¹äº†å…¨å±€å˜é‡çš„å€¼ï¼Œå¯¼è‡´ä»»æ„ä»£ç æ‰§è¡Œã€‚æ–‡ä»¶ï¼šsource\function\function_core.php(1080G)
 ```
 function output_replace($content) {
 		...
@@ -18,17 +20,17 @@ function output_replace($content) {
 	return $content;
 }
 ```
-µ±dzÉèÖÃÊ¹ÓÃ»º´æºó£¬³õÊ¼»¯Ê±»á°Ñ»º´æÄÚÈİ¼ÓÈëÈ«¾Ö±äÁ¿$_G£¬Ğ´Èë*_setting£¬·ÃÎÊ/discuz/forum.php?mod=ajax&inajax=yes&action=getthreadtypes£¬Ö±½ÓGetshell¡£
-####»·¾³
+å½“dzè®¾ç½®ä½¿ç”¨ç¼“å­˜åï¼Œåˆå§‹åŒ–æ—¶ä¼šæŠŠç¼“å­˜å†…å®¹åŠ å…¥å…¨å±€å˜é‡$_Gï¼Œå†™å…¥*_settingï¼Œè®¿é—®/discuz/forum.php?mod=ajax&inajax=yes&action=getthreadtypesï¼Œç›´æ¥Getshellã€‚
+####ç¯å¢ƒ
 
 Ubuntu 14.04 + LNMP + redis /mem+ Discuz X3.2!
 ```
-./addons.sh install memcached #lnmp°²×°mem
-./addons.sh install redis     #lnmp°²×°redis
+./addons.sh install memcached #lnmpå®‰è£…mem
+./addons.sh install redis     #lnmpå®‰è£…redis
 
 ```
 Windows 7 + phpStudy + redis-cli.exe/memcached + Discuz X3.2!
-ÅäÖÃphp.ini
+é…ç½®php.ini
 ```
 extension=php_igbinary.dll
 extension=php_redis.dll
@@ -42,42 +44,42 @@ docker run --name dz-redis -d yfix/redis
 
 docker run --name dz-ssrf --link dz-mysql:mysql -p 8888:80 -d dz-redis-init apache2 "-DFOREGROUND"
 ```
-·ÃÎÊ127.0.0.1:8888½øĞĞDiscuz!µÄ°²×°£¬½«config/config_global.phpÖĞredisµÄµØÖ·ºÍ¶Ë¿Ú¸ÄÎªredisÈİÆ÷µÄµØÖ·ºÍ¶Ë¿Ú£¬ÔÚºóÌ¨ÖĞ È«¾Ö -> ĞÔÄÜÓÅ»¯ -> ÄÚ´æÓÅ»¯ ÖĞ²é¿´redisÊÇ·ñ±»ÆôÓÃ£¬ÈôÒÑÆôÓÃÔò´î½¨Íê³É¡£
+è®¿é—®127.0.0.1:8888è¿›è¡ŒDiscuz!çš„å®‰è£…ï¼Œå°†config/config_global.phpä¸­redisçš„åœ°å€å’Œç«¯å£æ”¹ä¸ºrediså®¹å™¨çš„åœ°å€å’Œç«¯å£ï¼Œåœ¨åå°ä¸­ å…¨å±€ -> æ€§èƒ½ä¼˜åŒ– -> å†…å­˜ä¼˜åŒ– ä¸­æŸ¥çœ‹redisæ˜¯å¦è¢«å¯ç”¨ï¼Œè‹¥å·²å¯ç”¨åˆ™æ­å»ºå®Œæˆã€‚
 
-####¹ı³ÌÖĞµÄÒÉÎÊ
-* DzµÄssrfÒ»µ©ÓĞÃüÁîÖ´ĞĞ£¬Ö±½Ógetshell
-* RedisµÄÎ´ÊÚÈ¨·ÃÎÊ£¬Ç¶Ì×Lua½Å±¾½«»áµ¼ÖÂ´úÂëÖ´ĞĞÖ±½ÓĞ´shell/Ë½Ô¿
+####è¿‡ç¨‹ä¸­çš„ç–‘é—®
+* Dzçš„ssrfä¸€æ—¦æœ‰å‘½ä»¤æ‰§è¡Œï¼Œç›´æ¥getshell
+* Redisçš„æœªæˆæƒè®¿é—®ï¼ŒåµŒå¥—Luaè„šæœ¬å°†ä¼šå¯¼è‡´ä»£ç æ‰§è¡Œç›´æ¥å†™shell/ç§é’¥
 * ...
 
 
-###PoCÊ¹ÓÃ
+###PoCä½¿ç”¨
 
-Ê¹ÓÃpocsuite¿ò¼Ü
+ä½¿ç”¨pocsuiteæ¡†æ¶
 Usage:
 ```
 pocsuite -r dz_redis_exec.py -u url --verify
 pocsuite -r dz_redis_exec.py -u url --attack
 ```
-»·¾³²âÊÔ¾ùsuccess!
-###ĞŞ¸´Òâ¼û
-#### Discuz¼°DzµÄSSRFÎÊÌâ
+ç¯å¢ƒæµ‹è¯•å‡success!
+###ä¿®å¤æ„è§
+#### DiscuzåŠDzçš„SSRFé—®é¢˜
 
-* ¼°Ê±Éı¼¶Dz°æ±¾£¬¾¡Á¿±ÜÃâÊ¹ÓÃ²»Ã÷µÚÈı·½²å¼ş
-* ĞŞ¸Äfunction_core.phpÎÄ¼ş,Ìæ»»¼´¿É
+* åŠæ—¶å‡çº§Dzç‰ˆæœ¬ï¼Œå°½é‡é¿å…ä½¿ç”¨ä¸æ˜ç¬¬ä¸‰æ–¹æ’ä»¶
+* ä¿®æ”¹function_core.phpæ–‡ä»¶,æ›¿æ¢å³å¯
 ```
 if (preg_match("(/|#|\+|%).*(/|#|\+|%)e", $_G['setting']['output']['preg']['search']) !== FALSE) { die("request error"); } 
 	$content = preg_replace($_G['setting']['output']['preg']['search'], $_G['setting']['output']['preg']['replace'], $content);
 ```
-#### RedisÎ´ÊÚÈ¨·ÃÎÊ
+#### Redisæœªæˆæƒè®¿é—®
 
-* ÅäÖÃbindÑ¡Ïî£¬ÏŞ¶¨¿ÉÒÔÁ¬½ÓRedis·şÎñÆ÷µÄIP£¬ĞŞ¸Ä Redis µÄÄ¬ÈÏ¶Ë¿Ú6379
-* ÅäÖÃÈÏÖ¤£¬Ò²¾ÍÊÇAUTH£¬ÉèÖÃÃÜÂë£¬ÃÜÂë»áÒÔÃ÷ÎÄ·½Ê½±£´æÔÚRedisÅäÖÃÎÄ¼şÖĞ
-* ÅäÖÃrename-command ÅäÖÃÏî ¡°RENAME_CONFIG¡±£¬ÕâÑù¼´Ê¹´æÔÚÎ´ÊÚÈ¨·ÃÎÊ£¬Ò²ÄÜ¹»¸ø¹¥»÷ÕßÊ¹ÓÃconfig Ö¸Áî¼Ó´óÄÑ¶È
-* ºÃÏûÏ¢ÊÇRedis×÷Õß±íÊ¾½«»á¿ª·¢¡±real user¡±£¬Çø·ÖÆÕÍ¨ÓÃ»§ºÍadminÈ¨ÏŞ£¬ÆÕÍ¨ÓÃ»§½«»á±»½ûÖ¹ÔËĞĞÄ³Ğ©ÃüÁî£¬Èçconfig
-* ÕÕÑı¾µhttps://www.seebug.org/monster/?vul_id=89715
+* é…ç½®bindé€‰é¡¹ï¼Œé™å®šå¯ä»¥è¿æ¥RedisæœåŠ¡å™¨çš„IPï¼Œä¿®æ”¹ Redis çš„é»˜è®¤ç«¯å£6379
+* é…ç½®è®¤è¯ï¼Œä¹Ÿå°±æ˜¯AUTHï¼Œè®¾ç½®å¯†ç ï¼Œå¯†ç ä¼šä»¥æ˜æ–‡æ–¹å¼ä¿å­˜åœ¨Redisé…ç½®æ–‡ä»¶ä¸­
+* é…ç½®rename-command é…ç½®é¡¹ â€œRENAME_CONFIGâ€ï¼Œè¿™æ ·å³ä½¿å­˜åœ¨æœªæˆæƒè®¿é—®ï¼Œä¹Ÿèƒ½å¤Ÿç»™æ”»å‡»è€…ä½¿ç”¨config æŒ‡ä»¤åŠ å¤§éš¾åº¦
+* å¥½æ¶ˆæ¯æ˜¯Redisä½œè€…è¡¨ç¤ºå°†ä¼šå¼€å‘â€real userâ€ï¼ŒåŒºåˆ†æ™®é€šç”¨æˆ·å’Œadminæƒé™ï¼Œæ™®é€šç”¨æˆ·å°†ä¼šè¢«ç¦æ­¢è¿è¡ŒæŸäº›å‘½ä»¤ï¼Œå¦‚config
+* ç…§å¦–é•œhttps://www.seebug.org/monster/?vul_id=89715
 
 
-##²Î¿¼
+##å‚è€ƒ
 
 * http://pocsuite.org/
 * https://github.com/imp0wd3r
